@@ -2,7 +2,7 @@
 // @author         JoKer96
 // @name           IITC Plugin: Uniques-Highlighter
 // @category       Highlighter
-// @version        0.1
+// @version        0.2
 // @description    Highlights Portals for various reasons.
 // @namespace      https://www.joker96.de/ingress-iitc/
 // @match          https://intel.ingress.com/*

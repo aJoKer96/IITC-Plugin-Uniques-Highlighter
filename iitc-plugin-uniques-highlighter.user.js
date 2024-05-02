@@ -2,7 +2,7 @@
 // @author         JoKer96
 // @name           IITC Plugin: Uniques-Highlighter
 // @category       Highlighter
-// @version        0.3
+// @version        0.3.1
 // @description    Highlights Portals for various reasons.
 // @namespace      https://www.joker96.de/ingress-iitc/
 // @match          https://intel.ingress.com/*
@@ -29,7 +29,7 @@ function wrapper(plugin_info) {
     self.title = "Uniques-Highlighter";
     self.prefix = "[Uniques-Highlighter] ";
     self.author = "JoKer96";
-    self.version = "0.3";
+    self.version = "0.3.1";
     self.changelog = [
         {
             version: "0.3.1",

@@ -32,8 +32,11 @@ function wrapper(plugin_info) {
     self.version = "0.3";
     self.changelog = [
         {
+            version: "0.3.1",
+            changes:['Fixed an issue causing the configuration not showing on iOS devices.','Fixed another issue causing the changelog not showing up.'],
+        },{
             version: "0.3",
-            chnges: ['Addet configuration menu to set the displayed results to be inverted, as well as storing the configured settings localy. Also addet some menus to read some information about the plugin.'],
+            changes: ['Addet configuration menu to set the displayed results to be inverted, as well as storing the configured settings localy.','Also addet some menus to read some information about the plugin.'],
         },{
             version: "0.2",
             changes: ['Addet option to toggle each type of unique as a highligter to choose from.','Fixed the issue, that color disappeared after selecting a portal.'],
@@ -77,7 +80,7 @@ function wrapper(plugin_info) {
     self.settings.color.visit = "#000000";
 
     self.settings.invert = {};
-    self.settings.invert.captured = true;
+    self.settings.invert.captured = false;
     self.settings.invert.scout = false;
     self.settings.invert.visit = false;
 
@@ -253,7 +256,7 @@ function wrapper(plugin_info) {
         self.storesettings();
     }
 
-    self.menu = function() {
+    self.displayMenu = function() {
         var capturedChecked = "";
         var scoutChecked = "";
         var visitChecked = "";
@@ -292,16 +295,15 @@ function wrapper(plugin_info) {
             id: self.title + '-dialog',
             dialogClass: 'ui-dialog-' + self.pluginname,
             title: self.title,
-            width: 'auto'
+            width: 'auto',
         }).dialog('option', 'buttons', {
-            'About': function() { self.about(); },
-            'Changelog': function() { alert(self.changelog); },
+            'About': function() { self.displayAbout(); },
+            'Changelog': function() { self.displayChangelog(); },
             'Close': function() { $(this).dialog('close'); },
         });
-        //self.updatemenu();
     }
 
-    self.about = function() {
+    self.displayAbout = function() {
         let html = '<div>' +
             'Thank you for choosing my uniques plugin.<br />' +
             '<br />' +
@@ -321,13 +323,50 @@ function wrapper(plugin_info) {
             id: self.title + '-dialog',
             dialogClass: 'ui-dialog-' + self.pluginname,
             title: self.title + ' - About',
-            width: 'auto'
+            width: 'auto',
         }).dialog('option', 'buttons', {
-            '< Main menu': function() { self.menu(); },
-            'Changelog': function() { alert(self.changelog); },
+            '< Main menu': function() { self.displayMenu(); },
+            'Changelog': function() { self.displayChangelog(); },
             'Close': function() { $(this).dialog('close'); },
         });
     };
+
+    self.displayChangelog = function() {
+        let html = '<div>';
+        html += '<ul style="list-style: none; padding: 0px;">';
+        for (var i = 0; i < self.changelog.length; i++){
+            var version = self.changelog[i].version;
+            var changes = self.changelog[i].changes;
+            html += '<li>' +
+                    '<ul style="list-style: none; padding: 0px;">' +
+                    '<li>Version: ' + version + '</li>' +
+                    '<li>' +
+                    '<ul>';
+            for(var j = 0; j < changes.length; j++) {
+                var entry = changes[j];
+                html += '<li>' + entry + '</li>';
+            }
+            html += '</ul>' +
+                    '</li>' +
+                    '</ul>' +
+                    '</li>' +
+                    '<br />';
+        }
+        html += '</ul>' +
+                '<br /><span style="font-style: italic; font-size: smaller">' + self.title + ' v' + self.version + ' by ' + self.author + '</span>' +
+                '</div>';
+        window.dialog({
+            html: html,
+            id: self.title + '-dialog',
+            dialogClass: 'ui-dialog-' + self.pluginname,
+            title: self.title + ' - Changelog',
+            width: 'auto',
+        }).dialog('option', 'buttons', {
+            '< Main menu': function() { self.displayMenu(); },
+            'About': function() { self.displayAbout(); },
+            'Close': function() { $(this).dialog('close'); },
+        });
+    }
 
     // Debug messages, easy to toggle
     self.debug = function(message) {
@@ -346,7 +385,7 @@ function wrapper(plugin_info) {
         window.addPortalHighlighter(self.highlighter.visit, self.highlightUniqueVisits);
 
         // Adding configuration menu
-        $('#toolbox').append('<a onclick="' + self.namespace + 'menu(); return false;" href="#">' + self.title + '</a>');
+        $('#toolbox').append('<a onclick="' + self.namespace + 'displayMenu(); return false;" href="#">' + self.title + '</a>');
 
         $('head').append('<style>' +
                          '.' + self.pluginname + ' a.dialogbutton { display:block; color:#ffce00; border:1px solid #ffce00; padding:3px 0; margin:10px auto; width:80%; min-width: 232px; text-align:center; background:rgba(8,48,78,.9); }' +

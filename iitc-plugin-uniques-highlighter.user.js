@@ -2,7 +2,7 @@
 // @author         JoKer96
 // @name           IITC Plugin: Uniques-Highlighter
 // @category       Highlighter
-// @version        0.4.1
+// @version        0.4.2
 // @description    Highlights Portals for various reasons.
 // @namespace      https://www.joker96.de/ingress-iitc/
 // @updateURL      https://joker96.de/ingress-iitc-plugin/iitc-plugin-uniques-highlighter.user.js
@@ -31,9 +31,12 @@ function wrapper(plugin_info) {
     self.title = "Uniques-Highlighter";
     self.prefix = "[Uniques-Highlighter] ";
     self.author = "JoKer96";
-    self.version = "0.4.1";
+    self.version = "0.4.2";
     self.changelog = [
-        {
+	{
+	    version: "0.4.2",
+	    changes:['Removed and disabled debug messages.'],
+	},{
             version: "0.4.1",
             changes:['Fixed internal version naming.','Changed color picker preset, as well as some color picker options.'],
         },{
@@ -66,7 +69,7 @@ function wrapper(plugin_info) {
     self.localstoragesettings = self.pluginname + '-settings';
 
     // enable/disable debugging
-    self.debug = true;
+    self.debugEnabled = false;
 
     // Functional plugin variables
     const HISTORY_TYPE = {
@@ -217,13 +220,11 @@ function wrapper(plugin_info) {
                 break;
         }
 
-        self.debug(color);
         if(color !== null) {
             color = self.hexToRgb(color);
         } else {
             color = 'rgb(0, 0, 0)';
         };
-        self.debug(color);
 
         var style;
         switch (type) {
@@ -674,7 +675,7 @@ function wrapper(plugin_info) {
 
     // Debug messages, easy to toggle
     self.debug = function(message) {
-        if(self.debug) {
+        if(self.debugEnabled) {
             console.debug(self.prefix + message);
         }
     }
